@@ -13,21 +13,6 @@ class UserProfile(models.Model):
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # Model to store user preferences
 class UserPreference(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='preferences')

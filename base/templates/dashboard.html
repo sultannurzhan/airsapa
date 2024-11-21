@@ -3,6 +3,118 @@
 
 <div class="container">
     <h4>Dashboard</h4>
+
+    <div class="mt-3">
+    <span class="material-symbols-outlined">
+    location_on
+    </span>
+    {{user.profile.city}}
+    </div>
+
+    <div class="row">
+        <div class="col chart-container">
+            <canvas id="temperatureChart"></canvas>
+        </div>
+        <div class="col chart-container">
+            <canvas id="humidityChart"></canvas>
+        </div>
+        <div class="col chart-container">
+            <canvas id="airQualityChart"></canvas>
+        </div>
+    </div>
+
+    <script>
+        // Sample Data for Shymkent
+        const labels = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+        
+        // Temperature Data
+        const temperatureData = [22, 24, 26, 28, 27, 25, 23];
+        const temperatureChart = new Chart(document.getElementById('temperatureChart'), {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Temperature (°C)',
+                    data: temperatureData,
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderWidth: 2,
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Weekly Temperature in Shymkent'
+                    }
+                }
+            }
+        });
+
+        // Humidity Data
+        const humidityData = [55, 60, 58, 62, 65, 70, 68];
+        const humidityChart = new Chart(document.getElementById('humidityChart'), {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Humidity (%)',
+                    data: humidityData,
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Weekly Humidity in Shymkent'
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // PM2.5 Data
+        const pm25Data = [12, 15, 18, 10, 9, 13, 16];
+        const airQualityChart = new Chart(document.getElementById('airQualityChart'), {
+            type: 'radar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'PM2.5 (µg/m³)',
+                    data: pm25Data,
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 2,
+                    pointBackgroundColor: 'rgba(75, 192, 192, 1)'
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Air Quality (PM2.5) in Shymkent'
+                    }
+                },
+                scales: {
+                    r: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+
+
 </div>
 
 {% endblock content %}

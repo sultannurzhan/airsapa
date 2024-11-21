@@ -106,6 +106,8 @@ class Dashboard(LoginRequiredMixin, View):
         return context
     
     def get(self, request, *args, **kwargs):
+        user = request.user
+        context = {'user': user}
         return render(request, 'dashboard.html')
 
 
