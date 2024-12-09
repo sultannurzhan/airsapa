@@ -1,0 +1,7 @@
+.bg-own-blue{
+    background-color: #2196F3 !important;
+}
+
+#sidebar {
+    transition: all 0.3s ease-in-out;
+}

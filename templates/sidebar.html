@@ -1,0 +1,98 @@
+<nav id="sidebar" class="left-bar d-none d-md-block bg-light px-md-0">
+
+    <div class="ps-4 mt-3">
+        <a href="{% url 'dashboard' %}" class="nav-link left-bar-title" id="logo" style="-webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;">
+            AirSapa
+        </a>                        
+    </div>
+
+    <div class="position-sticky mt-2" style="height: 84%;">
+        <ul class="nav flex-column ms-4" style="height: 100%;">
+
+
+            <li class="nav-item mt-3">
+                <div class="d-flex justify-content-left">
+                    <a class="nav-link active text-dark p-0" href="">
+                        <span class="material-symbols-outlined">
+                            event_note
+                        </span>
+                    </a>
+                    <a class="nav-link active text-dark p-0 ps-2" href="">
+                        Yearly
+                    </a>
+                </div>
+            </li>
+
+            <li class="nav-item mt-3">
+                <div class="d-flex justify-content-left">
+                    <a class="nav-link active text-dark p-0" href="">
+                        <span class="material-symbols-outlined">
+                            calendar_month
+                        </span>
+                    </a>
+                    <a class="nav-link active text-dark p-0 ps-2" href="">
+                        Monthly
+                    </a>
+                </div>
+            </li>
+
+            <li class="nav-item mt-3">
+                <div class="d-flex justify-content-left">
+                    <a class="nav-link active text-dark p-0" href="">
+                        <span class="material-symbols-outlined">
+                            monitoring
+                        </span>
+                    </a>
+                    <a class="nav-link active text-dark p-0 ps-2" href="">
+                        Daily
+                    </a>
+                </div>
+            </li>
+
+            <li class="nav-item mt-3">
+                <div class="d-flex justify-content-left">
+                    <a class="nav-link active text-dark p-0" href="">
+                        <span class="material-symbols-outlined">
+                            contact_support
+                        </span>
+                    </a>
+                    <a class="nav-link active text-dark p-0 ps-2" href="">
+                        FAQ
+                    </a>
+                </div>
+            </li>
+
+            <li class="nav-item mt-3">
+                <div class="d-flex justify-content-left">
+                    <a class="nav-link active text-dark p-0" href="">
+                        <span class="material-symbols-outlined">
+                            feedback
+                        </span>
+                    </a>
+                    <a class="nav-link active text-dark p-0 ps-2" href="">
+                        About
+                    </a>
+                </div>
+            </li>
+
+            
+        
+            {% if request.user.is_authenticated %}
+            <li class="nav-item mt-auto">
+                <div class="d-flex justify-content-left">
+                    <a class="nav-link active text-dark p-0" href="{% url 'logout' %}">
+                        <span class="material-symbols-outlined">
+                            logout
+                            </span>
+                    </a>
+                    <a class="nav-link active text-dark p-0 ps-2" href="{% url 'logout' %}">
+                        Logout
+                    </a>
+                </div>
+            </li>
+            {% endif %}
+
+
+        </ul>
+    </div>
+</nav>

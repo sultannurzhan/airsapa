@@ -1,0 +1,466 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+
+.bio-control{
+  color: #737373;
+}
+/* Remove the default form-control spacing */
+.no-spacing {
+  margin: 0;
+  padding: 0; /* Reset padding */
+  color: #737373;
+  line-height: 0;
+}
+
+.country_label{
+  color: #737373;
+  margin: 0;
+  padding: 0; /* Reset padding */
+  line-height: 1.5;
+}
+
+/* Ensure no extra margin between li elements */
+#editProfileForm .list-group-item {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+#editProfileForm li {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+</style>
+
+<body class="g-sidenav-show bg-gray-100">
+  {% include 'newtemplate/parts/sidebar.html' %}
+  <div class="main-content position-relative max-height-vh-100 h-100">
+    {% include 'newtemplate/parts/navbar.html' %}
+    <div class="container-fluid px-2 px-md-4">
+      <div class="page-header min-height-300 border-radius-xl mt-4" style="background-image: url('https://images.unsplash.com/photo-1531512073830-ba890ca4eba2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80');">
+        <span class="mask  bg-gradient-dark  opacity-6"></span>
+      </div>
+      <div class="card card-body mx-2 mx-md-2 mt-n6">
+        <div class="row gx-4 mb-2">
+          <div class="col-auto">
+            <div class="avatar avatar-xl position-relative">
+              <img src="{% static 'assets/img/userphoto.png' %}" alt="profile_image" class="w-100 border-radius-lg shadow-sm">
+            </div>
+          </div>
+          <div class="col-auto my-auto">
+            <div class="h-100">
+              <h5 class="mb-1">
+                @{{user.username}}
+              </h5>
+              <p class="mb-0 font-weight-normal text-sm">
+                User from {{user.profile.city}}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="row">
+            <!--First Column-->
+            <div class="col-12 col-xl-6">
+              <div class="card card-plain h-100">
+                <div class="card-header pb-0 p-3">
+                  <h6 class="mb-0">Platform Settings</h6>
+                </div>
+                <div class="card-body p-3">
+                  <h6 class="text-uppercase text-body text-xs font-weight-bolder">Account</h6>
+
+
+
+                  <form method="post" id="editEmailAlerts">
+                    {% csrf_token %}
+                    <ul class="list-group">
+                        <li class="list-group-item border-0 px-0">
+                            <div class="form-check form-switch ps-0">
+                                <input 
+                                    class="form-check-input ms-auto" 
+                                    type="checkbox" 
+                                    name="air_quality_alert" 
+                                    id="air_quality_alert" 
+                                    {% if user.profile.air_quality_alert %}checked{% endif %}>
+                                <label 
+                                    class="form-check-label text-body ms-3 text-truncate w-80 mb-0" 
+                                    for="air_quality_alert">
+                                    Email me about <b>air quality</b> alerts
+                                </label>
+                            </div>
+                        </li>
+                        <li class="list-group-item border-0 px-0">
+                            <div class="form-check form-switch ps-0">
+                                <input 
+                                    class="form-check-input ms-auto" 
+                                    type="checkbox" 
+                                    name="weather_alert" 
+                                    id="weather_alert" 
+                                    {% if user.profile.weather_alert %}checked{% endif %}>
+                                <label 
+                                    class="form-check-label text-body ms-3 text-truncate w-80 mb-0" 
+                                    for="weather_alert">
+                                    Email me about <b>weather</b> alerts
+                                </label>
+                            </div>
+                        </li>
+                        <li class="list-group-item border-0 px-0">
+                            <div class="form-check form-switch ps-0">
+                                <input 
+                                    class="form-check-input ms-auto" 
+                                    type="checkbox" 
+                                    name="health_advice_alert" 
+                                    id="health_advice_alert" 
+                                    {% if user.profile.health_advice_alert %}checked{% endif %}>
+                                <label 
+                                    class="form-check-label text-body ms-3 text-truncate w-80 mb-0" 
+                                    for="health_advice_alert">
+                                    Email me about <b>health advices</b>
+                                </label>
+                            </div>
+                        </li>
+                    </ul>
+                    <button type="submit" class="btn btn-primary mt-3" id="submitButton" disabled>Save Preferences</button>
+                </form>
+                
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        const form = document.getElementById("editEmailAlerts");
+                        const inputs = form.querySelectorAll("input[type='checkbox']");
+                        const submitButton = document.getElementById("submitButton");
+                
+                        inputs.forEach(input => {
+                            input.addEventListener("change", function () {
+                                submitButton.disabled = false; // Enable the button when any input is changed
+                            });
+                        });
+                    });
+                </script>
+
+                  <h6 class="text-uppercase text-body text-xs font-weight-bolder mt-4">Website</h6>
+                  <small class="text-muted">(Coming soon...)</small>
+                  <ul class="list-group">
+                    <li class="list-group-item border-0 px-0">
+                      <div class="form-check form-switch ps-0">
+                        <input class="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault3">
+                        <label class="form-check-label text-body ms-3 text-truncate w-80 mb-0" for="flexSwitchCheckDefault3">New launches and projects</label>
+                      </div>
+                    </li>
+                    <li class="list-group-item border-0 px-0">
+                      <div class="form-check form-switch ps-0">
+                        <input class="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault4" checked>
+                        <label class="form-check-label text-body ms-3 text-truncate w-80 mb-0" for="flexSwitchCheckDefault4">Monthly product updates</label>
+                      </div>
+                    </li>
+                    <li class="list-group-item border-0 px-0 pb-0">
+                      <div class="form-check form-switch ps-0">
+                        <input class="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault5">
+                        <label class="form-check-label text-body ms-3 text-truncate w-80 mb-0" for="flexSwitchCheckDefault5">Subscribe to newsletter</label>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <!---------------->
+
+            <!--Second Column-->
+            <div class="col-12 col-xl-5">
+              <div class="card card-plain h-100">
+
+
+
+                <div class="card-header pb-0 p-3">
+                  <div class="row">
+                    <div class="col-md-8 d-flex align-items-center">
+                      <h6 class="mb-0">Profile Information</h6>
+                    </div>
+                    <div class="col-md-4 text-end">
+                      <a href="javascript:;" id="editProfileBtn">
+                        <i class="fas fa-user-edit text-secondary text-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Profile"></i>
+                      </a>
+                    </div>
+                  </div>
+                  <p id="bioText" class="text-sm pt-2">
+                    {% if user.profile.bio %}{{ user.profile.bio|linebreaksbr }}{% else %}You can write short about yourself here...{% endif %}
+                  </p>
+                  <form id="bioForm" method="POST" style="display: none;">
+                    {% csrf_token %}
+
+                    <textarea 
+                      name="bio" 
+                      class="form-control bio-control" 
+                      id="bioTextarea" 
+                      rows="1" 
+                      maxlength="500">{{ user.profile.bio|default:"You can write short about yourself here..." }}
+                    </textarea>
+
+                    <div class="text-muted small mt-1">
+                      <span id="charCount">0</span>/500 characters
+                    </div>
+                    <div id="charWarning" class="text-danger small" style="display: none;">
+                      Maximum character limit exceeded!
+                    </div>
+                    <button type="submit" class="btn btn-sm btn-primary mt-2">Save</button>
+                  </form>
+                </div>           
+
+
+                <div class="card-body p-3">
+                  <div class="d-flex justify-content-between">
+                    <h6 class="mb-0">Profile Details</h6>
+                    <a href="javascript:;" id="editProfileBtn2">
+                      <i class="fas fa-user-edit text-secondary text-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Profile"></i>
+                    </a>
+                  </div>
+                  <hr class="horizontal gray-light my-4">
+                  
+                  <!-- Non-editable section -->
+                  <ul class="list-group" id="profileDetails">
+                    <li class="list-group-item border-0 ps-0 pt-0 text-sm">
+                      <strong class="text-dark">First Name:</strong> &nbsp;{{ user.first_name }}
+                    </li>
+                    <li class="list-group-item border-0 ps-0 pt-0 text-sm">
+                      <strong class="text-dark">Last Name:</strong> &nbsp;{{ user.last_name }}
+                    </li>
+                    <li class="list-group-item border-0 ps-0 pt-0 text-sm">
+                      <strong class="text-dark">Email:</strong> &nbsp; {{ user.email }}
+                    </li>
+                    <li class="list-group-item border-0 ps-0 pt-0 text-sm">
+                      <strong class="text-dark">Country:</strong> &nbsp; {{ user.profile.country.name }}
+                    </li>
+                    <li class="list-group-item border-0 ps-0 pt-0 text-sm">
+                      <strong class="text-dark">City:</strong> &nbsp; {{ user.profile.city }}
+                    </li>
+                  </ul>
+                  
+                  <!-- Editable section (hidden initially) -->
+                  <form id="editProfileForm" method="POST" style="display: none;">
+                    {% csrf_token %}
+                    <ul class="list-group p-0 m-0">
+                      <li class="list-group-item border-0 ps-0 pt-0 text-sm d-flex align-items-center mb-0">
+                        <strong class="text-dark" style="flex: 0 0 auto;">First Name:</strong>&nbsp;&nbsp;
+                        <input type="text" name="first_name" id="firstName" class="form-control no-spacing" value="{{ user.first_name }}">
+                      </li>
+                      <li class="list-group-item border-0 ps-0 pt-0 text-sm d-flex align-items-center mb-0">
+                        <strong class="text-dark" style="flex: 0 0 auto;">Last Name:</strong>&nbsp;&nbsp;
+                        <input type="text" name="last_name" id="lastName" class="form-control no-spacing" value="{{ user.last_name }}">
+                      </li>
+                      <li class="list-group-item border-0 ps-0 pt-0 text-sm d-flex align-items-center mb-0">
+                        <strong class="text-dark" style="flex: 0 0 auto;">Email:</strong>&nbsp;&nbsp;&nbsp;
+                        <input type="email" name="email" id="email" class="form-control no-spacing" value="{{ user.email }}" required>
+                      </li>
+                      <li class="list-group-item border-0 ps-0 pt-0 text-sm d-flex align-items-center mb-0">
+                        <strong class="text-dark" style="flex: 0 0 auto;">Country:</strong>&nbsp;&nbsp;&nbsp;
+        
+                          <div class="input-group">
+                            {{ country_form.country }}  <!-- Django automatically applies form-control to the input -->
+                          </div>
+                          {% if country_form.country.errors %}
+                            <div class="invalid-feedback">
+                              {% for error in country_form.country.errors %}
+                                <p>{{ error }}</p>
+                              {% endfor %}
+                            </div>
+                          {% endif %}
+                          
+                      </li>
+                      <li class="list-group-item border-0 ps-0 pt-0 text-sm d-flex align-items-center mb-0">
+                        <strong class="text-dark" style="flex: 0 0 auto;">City:</strong>&nbsp;&nbsp;&nbsp;
+                        <input type="text" name="city" id="city" class="form-control no-spacing" value="{{ user.profile.city }}" required>
+                      </li>
+                      <li class="list-group-item border-0 ps-0 pt-0 text-sm mb-0">
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                      </li>
+                    </ul>
+                  </form>
+                </div>
+                <a href="{% url 'send_email' %}" class="btn btn-primary">Send Weather Alert</a>
+
+
+              </div>
+            </div>
+            <!----------------->
+          </div>
+        </div>
+      </div>
+    </div>
+    {% include 'newtemplate/parts/footer.html' %}
+  </div>
+  <div class="fixed-plugin">
+    <a class="fixed-plugin-button text-dark position-fixed px-3 py-2">
+      <i class="material-symbols-rounded py-2">settings</i>
+    </a>
+    <div class="card shadow-lg">
+      <div class="card-header pb-0 pt-3">
+        <div class="float-start">
+          <h5 class="mt-3 mb-0">Material UI Configurator</h5>
+          <p>See our dashboard options.</p>
+        </div>
+        <div class="float-end mt-4">
+          <button class="btn btn-link text-dark p-0 fixed-plugin-close-button">
+            <i class="material-symbols-rounded">clear</i>
+          </button>
+        </div>
+        <!-- End Toggle Button -->
+      </div>
+      <hr class="horizontal dark my-1">
+      <div class="card-body pt-sm-3 pt-0">
+        <!-- Sidebar Backgrounds -->
+        <div>
+          <h6 class="mb-0">Sidebar Colors</h6>
+        </div>
+        <a href="javascript:void(0)" class="switch-trigger background-color">
+          <div class="badge-colors my-2 text-start">
+            <span class="badge filter bg-gradient-primary" data-color="primary" onclick="sidebarColor(this)"></span>
+            <span class="badge filter bg-gradient-dark active" data-color="dark" onclick="sidebarColor(this)"></span>
+            <span class="badge filter bg-gradient-info" data-color="info" onclick="sidebarColor(this)"></span>
+            <span class="badge filter bg-gradient-success" data-color="success" onclick="sidebarColor(this)"></span>
+            <span class="badge filter bg-gradient-warning" data-color="warning" onclick="sidebarColor(this)"></span>
+            <span class="badge filter bg-gradient-danger" data-color="danger" onclick="sidebarColor(this)"></span>
+          </div>
+        </a>
+        <!-- Sidenav Type -->
+        <div class="mt-3">
+          <h6 class="mb-0">Sidenav Type</h6>
+          <p class="text-sm">Choose between different sidenav types.</p>
+        </div>
+        <div class="d-flex">
+          <button class="btn bg-gradient-dark px-3 mb-2" data-class="bg-gradient-dark" onclick="sidebarType(this)">Dark</button>
+          <button class="btn bg-gradient-dark px-3 mb-2 ms-2" data-class="bg-transparent" onclick="sidebarType(this)">Transparent</button>
+          <button class="btn bg-gradient-dark px-3 mb-2  active ms-2" data-class="bg-white" onclick="sidebarType(this)">White</button>
+        </div>
+        <p class="text-sm d-xl-none d-block mt-2">You can change the sidenav type just on desktop view.</p>
+        <!-- Navbar Fixed -->
+        <div class="mt-3 d-flex">
+          <h6 class="mb-0">Navbar Fixed</h6>
+          <div class="form-check form-switch ps-0 ms-auto my-auto">
+            <input class="form-check-input mt-1 ms-auto" type="checkbox" id="navbarFixed" onclick="navbarFixed(this)">
+          </div>
+        </div>
+        <hr class="horizontal dark my-3">
+        <div class="mt-2 d-flex">
+          <h6 class="mb-0">Light / Dark</h6>
+          <div class="form-check form-switch ps-0 ms-auto my-auto">
+            <input class="form-check-input mt-1 ms-auto" type="checkbox" id="dark-version" onclick="darkMode(this)">
+          </div>
+        </div>
+        <hr class="horizontal dark my-sm-4">
+        <a class="btn bg-gradient-info w-100" href="https://www.creative-tim.com/product/material-dashboard-pro">Free Download</a>
+        <a class="btn btn-outline-dark w-100" href="https://www.creative-tim.com/learning-lab/bootstrap/overview/material-dashboard">View documentation</a>
+        <div class="w-100 text-center">
+          <a class="github-button" href="https://github.com/creativetimofficial/material-dashboard" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star creativetimofficial/material-dashboard on GitHub">Star</a>
+          <h6 class="mt-3">Thank you for sharing!</h6>
+          <a href="https://twitter.com/intent/tweet?text=Check%20Material%20UI%20Dashboard%20made%20by%20%40CreativeTim%20%23webdesign%20%23dashboard%20%23bootstrap5&amp;url=https%3A%2F%2Fwww.creative-tim.com%2Fproduct%2Fsoft-ui-dashboard" class="btn btn-dark mb-0 me-2" target="_blank">
+            <i class="fab fa-twitter me-1" aria-hidden="true"></i> Tweet
+          </a>
+          <a href="https://www.facebook.com/sharer/sharer.php?u=https://www.creative-tim.com/product/material-dashboard" class="btn btn-dark mb-0 me-2" target="_blank">
+            <i class="fab fa-facebook-square me-1" aria-hidden="true"></i> Share
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--   Core JS Files   -->
+  <script src="../assets/js/core/popper.min.js"></script>
+  <script src="../assets/js/core/bootstrap.min.js"></script>
+  <script src="../assets/js/plugins/perfect-scrollbar.min.js"></script>
+  <script src="../assets/js/plugins/smooth-scrollbar.min.js"></script>
+  <script>
+    var win = navigator.platform.indexOf('Win') > -1;
+    if (win && document.querySelector('#sidenav-scrollbar')) {
+      var options = {
+        damping: '0.5'
+      }
+      Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
+    }
+  </script>
+  <!-- Github buttons -->
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+  <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
+  <script src="../assets/js/material-dashboard.min.js?v=3.2.0"></script>
+
+
+
+
+
+  <!--Change bio-->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const editProfileBtn = document.getElementById('editProfileBtn');
+      const bioText = document.getElementById('bioText');
+      const bioForm = document.getElementById('bioForm');
+      const bioTextarea = document.getElementById('bioTextarea');
+      const charCount = document.getElementById('charCount');
+      const charWarning = document.getElementById('charWarning');
+  
+      // Initial row size based on bio content
+      function adjustRowSize() {
+        bioTextarea.style.height = 'auto'; // Reset height to recalculate
+        bioTextarea.style.height = bioTextarea.scrollHeight + 'px'; // Adjust based on content height
+      }
+  
+      // Character count update and warning
+      function updateCharCount() {
+        const length = bioTextarea.value.length; // Includes line breaks as characters
+        charCount.textContent = length;
+        if (length > 500) {
+          charWarning.style.display = 'block';
+        } else {
+          charWarning.style.display = 'none';
+        }
+      }
+  
+      // Toggle bio form
+      editProfileBtn.addEventListener('click', function () {
+        bioText.style.display = bioForm.style.display === 'none' ? 'none' : 'block';
+        bioForm.style.display = bioForm.style.display === 'none' ? 'block' : 'none';
+        if (bioForm.style.display === 'block') {
+          adjustRowSize();
+          updateCharCount();
+        }
+      });
+  
+      // Adjust rows dynamically as the user types
+      bioTextarea.addEventListener('input', function () {
+        adjustRowSize();
+        updateCharCount();
+      });
+  
+      // Initialize character count
+      updateCharCount();
+    });
+  </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const editProfileBtn2 = document.getElementById('editProfileBtn2');
+      const profileDetails = document.getElementById('profileDetails');
+      const editProfileForm = document.getElementById('editProfileForm');
+    
+      // Toggle between editable and non-editable modes
+      editProfileBtn2.addEventListener('click', function () {
+        const isFormVisible = editProfileForm.style.display === 'block';
+        if (isFormVisible) {
+          // Hide the form and show the details
+          editProfileForm.style.display = 'none';
+          profileDetails.style.display = 'block';
+        } else {
+          // Show the form and hide the details
+          editProfileForm.style.display = 'block';
+          profileDetails.style.display = 'none';
+        }
+      });
+    });
+  </script>
+
+
+
+
+
+</body>
+
+{% endblock content %}
