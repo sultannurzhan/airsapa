@@ -352,7 +352,7 @@ class LocationsPage(View):
                 return JsonResponse({'error': 'Coordinates not provided'}, status=400)
 
             # WAQI API request URL
-            API_KEY = '7d192ca63cae02017579faf8c94e08c355de2830'
+            API_KEY = settings.WAQI_API_KEY
             url = f'https://api.waqi.info/feed/geo:{lat};{lng}/?token={API_KEY}'
 
             try:
@@ -389,6 +389,16 @@ class HealthAdvicePage(View):
         return render(request, self.template_name, context)
 
 
+class NotificationsPage(View):
+    template_name = 'newtemplate/notifications.html'
+    page_name = "Notifications"
+
+    def get(self, request, *args, **kwargs):
+        context = {'page_name': self.page_name}
+        return render(request, self.template_name, context)
+
+
+
 class Contact(View):
     pass
 
@@ -407,8 +417,6 @@ class Documentation(View):
 class UpgradeToPro(View):
     pass
 
-class NotificationsPage(View):
-    pass
 
 
 def send_email_view(request):
