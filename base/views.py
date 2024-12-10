@@ -67,7 +67,7 @@ def logoutUser(request):
 class RegisterPage(View):
     def get(self, request):
         if request.user.is_authenticated:
-            return redirect('home')
+            return redirect('dashboard')
         form = RegisterForm()
         return render(request, 'newtemplate/register.html', {'form': form})
 
@@ -75,7 +75,7 @@ class RegisterPage(View):
         form = RegisterForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('login')  # Redirect after successful registration
+            return redirect('login') 
         return render(request, 'newtemplate/register.html', {'form': form})
     
 
