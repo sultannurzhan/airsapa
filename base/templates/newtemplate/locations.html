@@ -159,79 +159,64 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <script>
-        // Initialize the map
-        const map = L.map('map', {
-            zoomControl: true,
-            minZoom: 2,
-            maxZoom: 18,
-            worldCopyJump: true,
-        }).setView([20, 0], 2); // Default global view
-    
-        // Add a tile layer (CartoDB Positron)
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/">CARTO</a>',
-            subdomains: 'abcd',
-            maxZoom: 20
-        }).addTo(map);
-    
-        // Add a marker to show the selected location
-        let marker = L.marker([20, 0], { draggable: true }).addTo(map);
-    
-        // Function to update coordinates display
-        function updateCoordinates(lat, lng) {
-            document.getElementById('coords').innerText = `Latitude: ${lat.toFixed(5)}, Longitude: ${lng.toFixed(5)}`;
-        }
-    
-        // Update coordinates when map is clicked
-        map.on('click', function (e) {
-            const { lat, lng } = e.latlng;
-    
-            // Move the marker to the clicked location
-            marker.setLatLng([lat, lng]);
-    
-            // Update the coordinates display
-            updateCoordinates(lat, lng);
-        });
-    
-        // Initial coordinates display
-        updateCoordinates(20, 0);
-    
-        // Fit bounds for a better user experience
-        map.fitWorld();
-    
-        // Handle fetching AQI when button is clicked
-        document.getElementById('fetch-aqi').addEventListener('click', function () {
-            const lat = marker.getLatLng().lat;
-            const lng = marker.getLatLng().lng;
-    
-            // Send coordinates to backend via AJAX to fetch AQI
-            $.ajax({
-                type: 'POST',
-                url: '{% url "locations_page" %}', 
-                data: {
-                    'lat': lat,
-                    'lng': lng,
-                    'csrfmiddlewaretoken': '{{ csrf_token }}', 
-                },
-                success: function(response) {
-                    if (response.aqi) {
-                        document.getElementById('aqi').innerText = `${response.aqi}`;
-                        console.log(response.data);
-                    } else {
-                        alert('Error fetching AQI data!');
-                    }
-                },
-                error: function(xhr, errmsg, err) {
-                    console.log(xhr.status + ": " + xhr.responseText);  // Handle errors
-                    alert('Error occurred while sending coordinates!');
-                }
-            });
-        });
+      const map = L.map('map', {
+          zoomControl: true,
+          minZoom: 2,
+          maxZoom: 18,
+          worldCopyJump: true,
+      }).setView([20, 0], 2);
+      
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/">CARTO</a>',
+          subdomains: 'abcd',
+          maxZoom: 20
+      }).addTo(map);
+      
+      let marker = L.marker([20, 0], { draggable: true }).addTo(map);
+      
+      function updateCoordinates(lat, lng) {
+          document.getElementById('coords').innerText = `Latitude: ${lat.toFixed(5)}, Longitude: ${lng.toFixed(5)}`;
+      }
+      
+      map.on('click', function (e) {
+          const { lat, lng } = e.latlng;
+          marker.setLatLng([lat, lng]);
+          updateCoordinates(lat, lng);
+      });
+      
+      updateCoordinates(20, 0);
+      
+      map.fitWorld();
+      
+      document.getElementById('fetch-aqi').addEventListener('click', function () {
+          const lat = marker.getLatLng().lat;
+          const lng = marker.getLatLng().lng;
+          
+          $.ajax({
+              type: 'POST',
+              url: '{% url "locations_page" %}', 
+              data: {
+                  'lat': lat,
+                  'lng': lng,
+                  'csrfmiddlewaretoken': '{{ csrf_token }}', 
+              },
+              success: function(response) {
+                  if (response.aqi) {
+                      document.getElementById('aqi').innerText = `${response.aqi}`;
+                      console.log(response.data);
+                  } else {
+                      alert('Error fetching AQI data!');
+                  }
+              },
+              error: function(xhr, errmsg, err) {
+                  console.log(xhr.status + ": " + xhr.responseText);
+                  alert('Error occurred while sending coordinates!');
+              }
+          });
+      });
     </script>
 
     
-
-
 
   <!--   Core JS Files   -->
   <script src="{% static 'assets/js/core/popper.min.js' %}"></script>
